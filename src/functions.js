@@ -475,7 +475,7 @@ function render_history_as_gif(){
 		});
 
 		var gif_canvas = new Canvas(width, height);
-		var frames = [...undos, canvas.getImageData(0, 0, canvas.width, canvas.height)];
+		var frames = [...undos, ctx.getImageData(0, 0, canvas.width, canvas.height)];
 		for(var i=0; i<frames.length; i++){
 			gif_canvas.ctx.clearRect(0, 0, gif_canvas.width, gif_canvas.height);
 			gif_canvas.ctx.putImageData(frames[i], 0, 0);
@@ -514,7 +514,7 @@ function render_history_as_apng(){
 	try{
 		var width = canvas.width;
 		var height = canvas.height;
-		var frames = [...undos, canvas.getImageData(0, 0, canvas.width, canvas.height)];
+		var frames = [...undos, ctx.getImageData(0, 0, canvas.width, canvas.height)];
 		// var apng = new APNG(frames, {loops: Infinity}, function(blob){
 		var apng = new APNG({loops: Infinity})
 		for(var i=0; i<frames.length; i++){
@@ -567,7 +567,7 @@ function undoable(callback, action){
 		redos = [];
 	}
 
-	undos.push(canvas.getImageData(0, 0, canvas.width, canvas.height));
+	undos.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
 	action && action();
 	callback && callback();
@@ -577,7 +577,7 @@ function undo(){
 	if(undos.length<1){ return false; }
 	this_ones_a_frame_changer();
 
-	redos.push(canvas.getImageData(0, 0, canvas.width, canvas.height));
+	redos.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
 	ctx.copy(undos.pop());
 
@@ -589,7 +589,7 @@ function redo(){
 	if(redos.length<1){ return false; }
 	this_ones_a_frame_changer();
 
-	undos.push(canvas.getImageData(0, 0, canvas.width, canvas.height));
+	undos.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
 	ctx.copy(redos.pop());
 
