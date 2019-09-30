@@ -68,21 +68,20 @@ tools = [{
 		var rect_w = inverty_size;
 		var rect_h = inverty_size;
 		
-		var ctx_src = undos[undos.length-1].getContext("2d");//psh
+		var id_src_full_image = undos[undos.length-1];//psh
+		var id_dest_rect = ctx.getImageData(rect_x, rect_y, rect_w, rect_h);
 		
-		// Make two tiny ImageData objects,
-		var id_dest = ctx.getImageData(rect_x, rect_y, rect_w, rect_h);
-		var id_src = ctx_src.getImageData(rect_x, rect_y, rect_w, rect_h);
-		
-		for(var i=0, l=id_dest.data.length; i<l; i+=4){
-			id_dest.data[i+0] = 255 - id_src.data[i+0];
-			id_dest.data[i+1] = 255 - id_src.data[i+1];
-			id_dest.data[i+2] = 255 - id_src.data[i+2];
-			id_dest.data[i+3] = 255;
+		for(var i=0, l=id_dest_rect.data.length; i<l; i+=4){
+			// TODO: equaaaaaaation..........
+			var x
+			id_dest_rect.data[i+0] = 255 - id_src_full_image.data[i+0];
+			id_dest_rect.data[i+1] = 255 - id_src_full_image.data[i+1];
+			id_dest_rect.data[i+2] = 255 - id_src_full_image.data[i+2];
+			id_dest_rect.data[i+3] = 255;
 			// @TODO maybe: invert based on id_src.data[i+3] and the background
 		}
 		
-		ctx.putImageData(id_dest, rect_x, rect_y);
+		ctx.putImageData(id_dest_rect, rect_x, rect_y);
 		
 	},
 	pointerup: function(){
